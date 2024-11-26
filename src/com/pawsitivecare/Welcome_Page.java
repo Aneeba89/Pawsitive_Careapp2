@@ -1,6 +1,9 @@
 package com.pawsitivecare;
 
 
+
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,10 +17,20 @@ public class Welcome_Page extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
-        // Set background image
-        ImageIcon backgroundImage = new ImageIcon("C:\\Users\\IDEAL\\OneDrive\\Desktop\\img_paws.jpg");
-        JLabel backgroundLabel = new JLabel(backgroundImage);
-        backgroundLabel.setLayout(new BorderLayout());
+        // Load background image
+        Image backgroundImage = new ImageIcon("C:\\Users\\IDEAL\\OneDrive\\Desktop\\wp\\PET_IMG7.jpg").getImage();
+
+        // Create a custom JPanel with background painting
+        JPanel contentPane = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+
+        contentPane.setLayout(new BorderLayout()); // Set layout for the content pane
+        setContentPane(contentPane); // Set the custom panel as the content pane
 
         // Add title label (Centered at the top)
         JLabel titleLabel = new JLabel("Welcome to PawsitiveCare!", SwingConstants.CENTER);
@@ -26,7 +39,7 @@ public class Welcome_Page extends JFrame {
         titleLabel.setOpaque(true);
         titleLabel.setBackground(new Color(255, 255, 255, 150)); // Semi-transparent white background
         titleLabel.setPreferredSize(new Dimension(900, 100));  // Adjusted width to 900
-        backgroundLabel.add(titleLabel, BorderLayout.NORTH);
+        contentPane.add(titleLabel, BorderLayout.NORTH);
 
         // Add description label (Centered below title)
         JLabel descriptionLabel = new JLabel("Your one-stop destination for pet care services.", SwingConstants.CENTER);
@@ -35,7 +48,7 @@ public class Welcome_Page extends JFrame {
         descriptionLabel.setOpaque(true);  // Make the label opaque to show background color
         descriptionLabel.setBackground(new Color(255, 255, 255, 150)); // Semi-transparent white background
         descriptionLabel.setPreferredSize(new Dimension(900, 60));  // Adjusted width to 900
-        backgroundLabel.add(descriptionLabel, BorderLayout.CENTER);
+        contentPane.add(descriptionLabel, BorderLayout.CENTER);
 
         // Create a panel to hold buttons (Login and Sign Up)
         JPanel buttonPanel = new JPanel();
@@ -96,24 +109,13 @@ public class Welcome_Page extends JFrame {
         servicesButton.setFocusable(false);
         contactButton.setFocusable(false);
 
-
-
-
-
-
         // Add buttons to the other panel
         otherButtonsPanel.add(servicesButton);
         otherButtonsPanel.add(contactButton);
 
         // Add the button panels to the background label
-        backgroundLabel.add(buttonPanel, BorderLayout.CENTER);  // Put login and signup in the center
-        backgroundLabel.add(otherButtonsPanel, BorderLayout.SOUTH);  // Put other buttons at the bottom
-
-        // Set the content pane of the frame
-        setContentPane(backgroundLabel);
-
-        // Set frame visibility
-        setVisible(true);
+        contentPane.add(buttonPanel, BorderLayout.CENTER);  // Put login and signup in the center
+        contentPane.add(otherButtonsPanel, BorderLayout.SOUTH);  // Put other buttons at the bottom
 
         // Action listener for login button
         loginButton.addActionListener(new ActionListener() {
@@ -121,7 +123,6 @@ public class Welcome_Page extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Login_Page loginFrame = new Login_Page();
                 loginFrame.setVisible(true);
-                //setVisible(false); // Hide welcome page if needed
             }
         });
 
@@ -131,7 +132,6 @@ public class Welcome_Page extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Signup_Page signup = new Signup_Page();
                 signup.setVisible(true);
-                //setVisible(false);
             }
         });
 
