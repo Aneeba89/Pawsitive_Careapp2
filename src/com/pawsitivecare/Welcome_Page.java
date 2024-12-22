@@ -1,9 +1,4 @@
 package com.pawsitivecare;
-
-
-
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,12 +8,12 @@ public class Welcome_Page extends JFrame {
 
     public Welcome_Page() {
         setTitle("Welcome to PawsitiveCare!");
-        setSize(900, 800);  // Set the size to 900x800
+        setSize(800, 700);  // Set the size to 900x800
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
         // Load background image
-        Image backgroundImage = new ImageIcon("C:\\Users\\IDEAL\\OneDrive\\Desktop\\wp\\PET_IMG7.jpg").getImage();
+        Image backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\Aneeba Project 062\\SCDproject\\PET_IMG7.jpg").getImage();
 
         // Create a custom JPanel with background painting
         JPanel contentPane = new JPanel() {
@@ -96,21 +91,21 @@ public class Welcome_Page extends JFrame {
         otherButtonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // Center the buttons with space
 
         // Buttons for "Our Services" and "Contact Us"
-        JButton servicesButton = new JButton("Our Services");
+//        JButton servicesButton = new JButton("Our Services");
         JButton contactButton = new JButton("Contact Us");
 
         // Set the font and color for the buttons
-        servicesButton.setFont(buttonFont);
+//        servicesButton.setFont(buttonFont);
         contactButton.setFont(buttonFont);
-        servicesButton.setBackground(buttonColor);
+//        servicesButton.setBackground(buttonColor);
         contactButton.setBackground(buttonColor);
-        servicesButton.setForeground(textColor);
+//        servicesButton.setForeground(textColor);
         contactButton.setForeground(textColor);
-        servicesButton.setFocusable(false);
+//        servicesButton.setFocusable(false);
         contactButton.setFocusable(false);
 
         // Add buttons to the other panel
-        otherButtonsPanel.add(servicesButton);
+//        otherButtonsPanel.add(servicesButton);
         otherButtonsPanel.add(contactButton);
 
         // Add the button panels to the background label
@@ -136,9 +131,9 @@ public class Welcome_Page extends JFrame {
         });
 
         // Action listener for services button
-        servicesButton.addActionListener(e -> {
-            Our_Services_Page.main(new String[]{}); // Open the "Our Services" page
-        });
+//        servicesButton.addActionListener(e -> {
+//            Our_Services_Page.main(new String[]{}); // Open the "Our Services" page
+//        });
 
         // Action listener for contact us button
         contactButton.addActionListener(e -> {

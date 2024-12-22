@@ -1,150 +1,104 @@
-package com.pawsitivecare;
-//
+//package com.pawsitivecare;
 //
 //import javax.swing.*;
-//        import java.awt.*;
-//        import java.util.HashMap;
+//import java.awt.*;
+//import java.util.HashMap;
 //import java.util.Map;
 //
 //public class PetCareArticles extends JFrame {
 //
-//    // Map to keep track of open article windows
+//    // Map to track open article windows
 //    private final Map<String, JFrame> openArticles = new HashMap<>();
 //
-//    // Map to store articles with their categories
-//    private final Map<String, String> articlesMap = new HashMap<>();
-//
-//    // Main content panel to display articles
-//    private final JPanel contentPanel = new JPanel();
+//    // Search components
+//    private JTextField searchField;
+//    private JButton searchButton;
+//    private JButton resetButton;
+//    private JPanel contentPanel;
 //
 //    public PetCareArticles() {
 //        setTitle("Pet Care Articles");
-//        setSize(900, 600);
+//        setSize(800, 700);
 //        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        setLocationRelativeTo(null); // Center the frame
+//        setLocationRelativeTo(null);
 //
-//        // Main layout
 //        setLayout(new BorderLayout());
 //
-//        // Title label
+//        // Title
 //        JLabel titleLabel = new JLabel("Pet Care Articles", SwingConstants.CENTER);
 //        titleLabel.setFont(new Font("Papyrus", Font.BOLD, 24));
 //        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 //        titleLabel.setForeground(new Color(0, 100, 200));
 //        add(titleLabel, BorderLayout.NORTH);
 //
-//        // Add Search Bar Panel
-//        JPanel searchPanel = new JPanel(new BorderLayout());
-//        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//        // Search Panel
+//        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//        resetButton = new JButton("Reset");
+//        resetButton.addActionListener(e -> resetSearch());
 //
-//        JTextField searchField = new JTextField();
-//        searchField.setFont(new Font("Arial", Font.PLAIN, 16));
-//        searchPanel.add(searchField, BorderLayout.CENTER);
+//        searchField = new JTextField(70); // Extended size for better usability
+//        searchButton = new JButton("Search");
+//        searchButton.addActionListener(e -> filterArticles(searchField.getText().trim()));
 //
-//        JButton searchButton = new JButton("Search");
-//        searchButton.setFont(new Font("Arial", Font.BOLD, 16));
-//        searchButton.setFocusable(false);
-//
-//        searchPanel.add(searchButton, BorderLayout.EAST);
-//
-//        JButton resetButton = new JButton("Reset");
-//        resetButton.setFont(new Font("Arial", Font.BOLD, 16));
-//        resetButton.setFocusable(false);
-//
-//        searchPanel.add(resetButton, BorderLayout.WEST);
-//
+//        searchPanel.add(resetButton);
+//        searchPanel.add(searchField);
+//        searchPanel.add(searchButton);
 //        add(searchPanel, BorderLayout.NORTH);
 //
-//        // Main content panel
-//        contentPanel.setLayout(new GridLayout(0, 2, 20, 20)); // 2 columns, dynamic rows
+//        // Content Panel
+//        contentPanel = new JPanel();
+//        contentPanel.setLayout(new GridLayout(0, 2, 20, 20)); // Flexible rows with 2 columns
 //        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+//        populateCategories();
 //
-//        // Add categories with articles
+//        JScrollPane scrollPane = new JScrollPane(contentPanel);
+//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+//        add(scrollPane, BorderLayout.CENTER);
+//
+//        // Back Button
+//        JButton backButton = new JButton("Back");
+//        backButton.setFont(new Font("Papyrus", Font.PLAIN, 18));
+//        backButton.setBackground(new Color(0, 0, 0));
+//        backButton.setForeground(Color.WHITE);
+//        backButton.addActionListener(e -> dispose());
+//        add(backButton, BorderLayout.SOUTH);
+//
+//        setVisible(true);
+//    }
+//
+//    private void populateCategories() {
+//        // Populate categories with articles
 //        addCategory(contentPanel, "Dogs", new String[]{
 //                "Dog Training Basics",
-//                "Understanding Dog Behavior",
+//                "Understanding Dog Behavior", // Added article
 //                "Best Diets for Dogs",
 //                "Common Health Issues in Dogs",
 //                "Grooming Tips for Dogs"
 //        });
 //
 //        addCategory(contentPanel, "Cats", new String[]{
-//                "Caring for Your Cat's Coat",
-//                "Why Do Cats Purr?",
-//                "Feeding Your Cat the Right Way",
-//                "Dealing with Cat Anxiety",
-//                "Indoor vs Outdoor Cats"
+//                "Caring for Your Cat",
+//                "Understanding Cat Behavior",
+//                "Common Health Issues in Cats",
+//                "Best Diets for Cats",
+//                "Grooming Tips for Cats"
 //        });
 //
 //        addCategory(contentPanel, "Birds", new String[]{
-//                "How to Train Your Parrot",
-//                "Common Bird Illnesses",
-//                "Choosing the Right Bird Cage",
-//                "What to Feed Your Bird",
-//                "Keeping Your Bird Happy"
+//                "Caring for Pet Birds",
+//                "Understanding Bird Behavior",
+//                "Feeding Your Birds",
+//                "Common Health Issues in Birds",
+//                "Training Pet Birds"
 //        });
 //
 //        addCategory(contentPanel, "Fish", new String[]{
-//                "Setting Up Your Aquarium",
-//                "Caring for Goldfish",
-//                "Maintaining Water Quality",
+//                "Setting Up an Aquarium",
+//                "Caring for Tropical Fish",
 //                "Feeding Your Fish",
-//                "Aquarium Decoration Ideas"
+//                "Common Health Issues in Fish",
+//                "Water Quality Tips for Fish"
 //        });
-//
-//        addCategory(contentPanel, "Rabbits", new String[]{
-//                "Creating a Rabbit-Friendly Home",
-//                "Rabbit Diet Essentials",
-//                "How to Handle Your Rabbit",
-//                "Common Rabbit Diseases",
-//                "Bonding with Your Rabbit"
-//        });
-//
-//        // Add content panel to scrollable pane
-//        JScrollPane scrollPane = new JScrollPane(contentPanel);
-//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-//        add(scrollPane, BorderLayout.CENTER);
-//
-//        // Back button
-//        JButton backButton = new JButton("Back");
-//        backButton.setFont(new Font("Papyrus", Font.PLAIN, 18));
-//        backButton.setBackground(new Color(0, 0, 0));
-//        backButton.setForeground(Color.WHITE);
-//        backButton.addActionListener(e -> dispose()); // Close the articles page
-//        backButton.setFocusable(false);
-//
-//        add(backButton, BorderLayout.SOUTH);
-//
-//        // Search button action
-//        searchButton.addActionListener(e -> {
-//            String searchQuery = searchField.getText().trim().toLowerCase();
-//            contentPanel.removeAll();
-//
-//            // Add filtered articles
-//            for (Map.Entry<String, String> entry : articlesMap.entrySet()) {
-//                String article = entry.getKey();
-//                String category = entry.getValue();
-//
-//                if (article.toLowerCase().contains(searchQuery)) {
-//                    addCategory(contentPanel, category, new String[]{article});
-//                }
-//            }
-//
-//            // Refresh the UI
-//            contentPanel.revalidate();
-//            contentPanel.repaint();
-//        });
-//
-//        // Reset button action
-//        resetButton.addActionListener(e -> {
-//            searchField.setText("");
-//            contentPanel.removeAll();
-//            addAllCategories();
-//            contentPanel.revalidate();
-//            contentPanel.repaint();
-//        });
-//
-//        setVisible(true);
 //    }
 //
 //    private void addCategory(JPanel panel, String categoryName, String[] articles) {
@@ -155,8 +109,6 @@ package com.pawsitivecare;
 //        linksPanel.setLayout(new BoxLayout(linksPanel, BoxLayout.Y_AXIS));
 //
 //        for (String article : articles) {
-//            articlesMap.put(article, categoryName); // Add articles to the map
-//
 //            JButton articleButton = new JButton(article);
 //            articleButton.setFont(new Font("Arial", Font.BOLD, 14));
 //            articleButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -166,6 +118,7 @@ package com.pawsitivecare;
 //            articleButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 //
 //            articleButton.addActionListener(e -> openArticle(categoryName, article));
+//
 //            linksPanel.add(articleButton);
 //        }
 //
@@ -175,18 +128,29 @@ package com.pawsitivecare;
 //
 //    private void openArticle(String category, String articleTitle) {
 //        if (openArticles.containsKey(articleTitle)) {
-//            JFrame openFrame = openArticles.get(articleTitle);
-//            if (openFrame != null) {
-//                openFrame.toFront();
-//                openFrame.requestFocus();
+//            JFrame existingFrame = openArticles.get(articleTitle);
+//            if (existingFrame != null) {
+//                existingFrame.toFront();
+//                existingFrame.requestFocus();
 //                return;
 //            }
 //        }
 //
-//        JFrame articleFrame = new JFrame(articleTitle);
-//        articleFrame.setSize(600, 400);
-//        articleFrame.setLocationRelativeTo(null);
-//        articleFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        JFrame articleFrame;
+//        switch (articleTitle) {
+//            case "Understanding Dog Behavior":
+//                articleFrame = new Article_DogBehaviour(); // Open the Understanding Dog Behavior article
+//                break;
+//            case "Dog Training Basics":
+//                articleFrame = new Article_TrainingBasics(); // Open the Dog Training Basics article
+//                break;
+//            default:
+//                articleFrame = createDefaultArticleFrame(category, articleTitle);
+//                break;
+//        }
+//
+//        articleFrame.setVisible(true);
+//        openArticles.put(articleTitle, articleFrame);
 //
 //        articleFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 //            @Override
@@ -194,11 +158,18 @@ package com.pawsitivecare;
 //                openArticles.remove(articleTitle);
 //            }
 //        });
+//    }
+//
+//    private JFrame createDefaultArticleFrame(String category, String articleTitle) {
+//        JFrame articleFrame = new JFrame(articleTitle);
+//        articleFrame.setSize(600, 400);
+//        articleFrame.setLocationRelativeTo(null);
+//        articleFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //
 //        JTextArea articleContent = new JTextArea(
 //                "Category: " + category + "\n\n" +
 //                        "Article Title: " + articleTitle + "\n\n" +
-//                        "Content for this article will go here. You can add detailed information about the article in this window."
+//                        "Content for this article will go here."
 //        );
 //        articleContent.setFont(new Font("Arial", Font.BOLD, 16));
 //        articleContent.setLineWrap(true);
@@ -207,51 +178,39 @@ package com.pawsitivecare;
 //
 //        JScrollPane scrollPane = new JScrollPane(articleContent);
 //        articleFrame.add(scrollPane);
-//        articleFrame.setVisible(true);
 //
-//        openArticles.put(articleTitle, articleFrame);
+//        return articleFrame;
 //    }
 //
-//    private void addAllCategories() {
-//        addCategory(contentPanel, "Dogs", new String[]{
-//                "Dog Training Basics",
-//                "Understanding Dog Behavior",
-//                "Best Diets for Dogs",
-//                "Common Health Issues in Dogs",
-//                "Grooming Tips for Dogs"
-//        });
+//    private void filterArticles(String searchTerm) {
+//        Component[] components = contentPanel.getComponents();
+//        for (Component component : components) {
+//            if (component instanceof JPanel) {
+//                JPanel categoryPanel = (JPanel) component;
+//                Component[] articleButtons = ((JPanel) ((JPanel) categoryPanel.getComponent(0)).getComponent(0)).getComponents();
 //
-//        addCategory(contentPanel, "Cats", new String[]{
-//                "Caring for Your Cat's Coat",
-//                "Why Do Cats Purr?",
-//                "Feeding Your Cat the Right Way",
-//                "Dealing with Cat Anxiety",
-//                "Indoor vs Outdoor Cats"
-//        });
+//                boolean anyVisible = false;
+//                for (Component articleComponent : articleButtons) {
+//                    if (articleComponent instanceof JButton) {
+//                        JButton articleButton = (JButton) articleComponent;
+//                        if (articleButton.getText().toLowerCase().contains(searchTerm.toLowerCase())) {
+//                            articleButton.setVisible(true);
+//                            anyVisible = true;
+//                        } else {
+//                            articleButton.setVisible(false);
+//                        }
+//                    }
+//                }
+//                categoryPanel.setVisible(anyVisible);
+//            }
+//        }
+//        contentPanel.revalidate();
+//        contentPanel.repaint();
+//    }
 //
-//        addCategory(contentPanel, "Birds", new String[]{
-//                "How to Train Your Parrot",
-//                "Common Bird Illnesses",
-//                "Choosing the Right Bird Cage",
-//                "What to Feed Your Bird",
-//                "Keeping Your Bird Happy"
-//        });
-//
-//        addCategory(contentPanel, "Fish", new String[]{
-//                "Setting Up Your Aquarium",
-//                "Caring for Goldfish",
-//                "Maintaining Water Quality",
-//                "Feeding Your Fish",
-//                "Aquarium Decoration Ideas"
-//        });
-//
-//        addCategory(contentPanel, "Rabbits", new String[]{
-//                "Creating a Rabbit-Friendly Home",
-//                "Rabbit Diet Essentials",
-//                "How to Handle Your Rabbit",
-//                "Common Rabbit Diseases",
-//                "Bonding with Your Rabbit"
-//        });
+//    private void resetSearch() {
+//        searchField.setText("");
+//        filterArticles("");
 //    }
 //
 //    public static void main(String[] args) {
@@ -259,6 +218,8 @@ package com.pawsitivecare;
 //    }
 //}
 
+//
+package com.pawsitivecare;
 
 import javax.swing.*;
 import java.awt.*;
@@ -267,147 +228,98 @@ import java.util.Map;
 
 public class PetCareArticles extends JFrame {
 
-    // Map to keep track of open article windows
+    // Map to track open article windows
     private final Map<String, JFrame> openArticles = new HashMap<>();
 
-    // Map to store articles with their categories
-    private final Map<String, String> articlesMap = new HashMap<>();
-
-    // Main content panel to display articles
-    private final JPanel contentPanel = new JPanel();
+    // Search components
+    private JTextField searchField;
+    private JButton searchButton;
+    private JButton resetButton;
+    private JPanel contentPanel;
 
     public PetCareArticles() {
         setTitle("Pet Care Articles");
-        setSize(900, 600);
+        setSize(900, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the frame
+        setLocationRelativeTo(null);
 
-        // Set pastel lavender background color for the frame
-        getContentPane().setBackground(new Color(255, 127, 80)); // Pastel lavender color
-
-        // Main layout
         setLayout(new BorderLayout());
 
-        // Title label
+        // Title
         JLabel titleLabel = new JLabel("Pet Care Articles", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Papyrus", Font.BOLD, 24));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         titleLabel.setForeground(new Color(0, 100, 200));
         add(titleLabel, BorderLayout.NORTH);
 
-        // Add Search Bar Panel
-        JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // Search Panel
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        resetButton = new JButton("Reset");
+        resetButton.addActionListener(e -> resetSearch());
 
-        JTextField searchField = new JTextField();
-        searchField.setFont(new Font("Arial", Font.PLAIN, 16));
-        searchPanel.add(searchField, BorderLayout.CENTER);
+        searchField = new JTextField(70); // Extended size for better usability
+        searchButton = new JButton("Search");
+        searchButton.addActionListener(e -> filterArticles(searchField.getText().trim()));
 
-        JButton searchButton = new JButton("Search");
-        searchButton.setFont(new Font("Arial", Font.BOLD, 16));
-        searchButton.setFocusable(false);
-
-        searchPanel.add(searchButton, BorderLayout.EAST);
-
-        JButton resetButton = new JButton("Reset");
-        resetButton.setFont(new Font("Arial", Font.BOLD, 16));
-        resetButton.setFocusable(false);
-
-        searchPanel.add(resetButton, BorderLayout.WEST);
-
+        searchPanel.add(resetButton);
+        searchPanel.add(searchField);
+        searchPanel.add(searchButton);
         add(searchPanel, BorderLayout.NORTH);
 
-        // Set pastel background for the content panel (articles grid)
-        contentPanel.setLayout(new GridLayout(0, 2, 20, 20)); // 2 columns, dynamic rows
+        // Content Panel
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(0, 2, 20, 20)); // Flexible rows with 2 columns
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        contentPanel.setBackground(new Color(255, 240, 245)); // Soft pastel pink background
+        populateCategories();
 
-        // Add categories with articles
+        JScrollPane scrollPane = new JScrollPane(contentPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Back Button
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Papyrus", Font.PLAIN, 18));
+        backButton.setBackground(new Color(0, 0, 0));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(e -> dispose());
+        add(backButton, BorderLayout.SOUTH);
+
+        setVisible(true);
+    }
+
+    private void populateCategories() {
+        // Populate categories with articles
         addCategory(contentPanel, "Dogs", new String[]{
                 "Dog Training Basics",
-                "Understanding Dog Behavior",
+                "Understanding Dog Behavior", // Added article
                 "Best Diets for Dogs",
                 "Common Health Issues in Dogs",
                 "Grooming Tips for Dogs"
         });
 
         addCategory(contentPanel, "Cats", new String[]{
-                "Caring for Your Cat's Coat",
-                "Why Do Cats Purr?",
-                "Feeding Your Cat the Right Way",
-                "Dealing with Cat Anxiety",
-                "Indoor vs Outdoor Cats"
+                "Caring for Your Cat",
+                "Understanding Cat Behavior",
+                "Common Health Issues in Cats",
+                "Best Diets for Cats",
+                "Grooming Tips for Cats"
         });
 
         addCategory(contentPanel, "Birds", new String[]{
-                "How to Train Your Parrot",
-                "Common Bird Illnesses",
-                "Choosing the Right Bird Cage",
-                "What to Feed Your Bird",
-                "Keeping Your Bird Happy"
+                "Caring for Pet Birds",
+                "Understanding Bird Behavior",
+                "Feeding Your Birds",
+                "Common Health Issues in Birds",
+                "Training Pet Birds"
         });
 
         addCategory(contentPanel, "Fish", new String[]{
-                "Setting Up Your Aquarium",
-                "Caring for Goldfish",
-                "Maintaining Water Quality",
+                "Setting Up an Aquarium",
+                "Caring for Tropical Fish",
                 "Feeding Your Fish",
-                "Aquarium Decoration Ideas"
+                "Common Health Issues in Fish",
+                "Water Quality Tips for Fish"
         });
-
-        addCategory(contentPanel, "Rabbits", new String[]{
-                "Creating a Rabbit-Friendly Home",
-                "Rabbit Diet Essentials",
-                "How to Handle Your Rabbit",
-                "Common Rabbit Diseases",
-                "Bonding with Your Rabbit"
-        });
-
-        // Add content panel to scrollable pane
-        JScrollPane scrollPane = new JScrollPane(contentPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        add(scrollPane, BorderLayout.CENTER);
-
-        // Back button
-        JButton backButton = new JButton("Back");
-        backButton.setFont(new Font("Papyrus", Font.PLAIN, 18));
-        backButton.setBackground(new Color(0, 0, 0));
-        backButton.setForeground(Color.WHITE);
-        backButton.addActionListener(e -> dispose()); // Close the articles page
-        backButton.setFocusable(false);
-
-        add(backButton, BorderLayout.SOUTH);
-
-        // Search button action
-        searchButton.addActionListener(e -> {
-            String searchQuery = searchField.getText().trim().toLowerCase();
-            contentPanel.removeAll();
-
-            // Add filtered articles
-            for (Map.Entry<String, String> entry : articlesMap.entrySet()) {
-                String article = entry.getKey();
-                String category = entry.getValue();
-
-                if (article.toLowerCase().contains(searchQuery)) {
-                    addCategory(contentPanel, category, new String[]{article});
-                }
-            }
-
-            // Refresh the UI
-            contentPanel.revalidate();
-            contentPanel.repaint();
-        });
-
-        // Reset button action
-        resetButton.addActionListener(e -> {
-            searchField.setText("");
-            contentPanel.removeAll();
-            addAllCategories();
-            contentPanel.revalidate();
-            contentPanel.repaint();
-        });
-
-        setVisible(true);
     }
 
     private void addCategory(JPanel panel, String categoryName, String[] articles) {
@@ -418,8 +330,6 @@ public class PetCareArticles extends JFrame {
         linksPanel.setLayout(new BoxLayout(linksPanel, BoxLayout.Y_AXIS));
 
         for (String article : articles) {
-            articlesMap.put(article, categoryName); // Add articles to the map
-
             JButton articleButton = new JButton(article);
             articleButton.setFont(new Font("Arial", Font.BOLD, 14));
             articleButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -429,6 +339,7 @@ public class PetCareArticles extends JFrame {
             articleButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
             articleButton.addActionListener(e -> openArticle(categoryName, article));
+
             linksPanel.add(articleButton);
         }
 
@@ -438,18 +349,29 @@ public class PetCareArticles extends JFrame {
 
     private void openArticle(String category, String articleTitle) {
         if (openArticles.containsKey(articleTitle)) {
-            JFrame openFrame = openArticles.get(articleTitle);
-            if (openFrame != null) {
-                openFrame.toFront();
-                openFrame.requestFocus();
+            JFrame existingFrame = openArticles.get(articleTitle);
+            if (existingFrame != null) {
+                existingFrame.toFront();
+                existingFrame.requestFocus();
                 return;
             }
         }
 
-        JFrame articleFrame = new JFrame(articleTitle);
-        articleFrame.setSize(600, 400);
-        articleFrame.setLocationRelativeTo(null);
-        articleFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JFrame articleFrame;
+        switch (articleTitle) {
+            case "Understanding Dog Behavior":
+                articleFrame = new Article_DogBehaviour(); // Open the Understanding Dog Behavior article
+                break;
+            case "Dog Training Basics":
+                articleFrame = new Article_TrainingBasics(); // Open the Dog Training Basics article
+                break;
+            default:
+                articleFrame = createDefaultArticleFrame(category, articleTitle);
+                break;
+        }
+
+        articleFrame.setVisible(true);
+        openArticles.put(articleTitle, articleFrame);
 
         articleFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -457,11 +379,18 @@ public class PetCareArticles extends JFrame {
                 openArticles.remove(articleTitle);
             }
         });
+    }
+
+    private JFrame createDefaultArticleFrame(String category, String articleTitle) {
+        JFrame articleFrame = new JFrame(articleTitle);
+        articleFrame.setSize(600, 400);
+        articleFrame.setLocationRelativeTo(null);
+        articleFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JTextArea articleContent = new JTextArea(
                 "Category: " + category + "\n\n" +
                         "Article Title: " + articleTitle + "\n\n" +
-                        "Content for this article will go here. You can add detailed information about the article in this window."
+                        "Content for this article will go here."
         );
         articleContent.setFont(new Font("Arial", Font.BOLD, 16));
         articleContent.setLineWrap(true);
@@ -470,54 +399,49 @@ public class PetCareArticles extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(articleContent);
         articleFrame.add(scrollPane);
-        articleFrame.setVisible(true);
 
-        openArticles.put(articleTitle, articleFrame);
+        return articleFrame;
     }
 
-    private void addAllCategories() {
-        addCategory(contentPanel, "Dogs", new String[]{
-                "Dog Training Basics",
-                "Understanding Dog Behavior",
-                "Best Diets for Dogs",
-                "Common Health Issues in Dogs",
-                "Grooming Tips for Dogs"
-        });
+    // Method to filter articles based on search term
+    private void filterArticles(String searchTerm) {
+        Component[] components = contentPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JPanel) {
+                JPanel categoryPanel = (JPanel) component;
+                Component[] articleButtons = ((JPanel) categoryPanel.getComponent(0)).getComponents();
 
-        addCategory(contentPanel, "Cats", new String[]{
-                "Caring for Your Cat's Coat",
-                "Why Do Cats Purr?",
-                "Feeding Your Cat the Right Way",
-                "Dealing with Cat Anxiety",
-                "Indoor vs Outdoor Cats"
-        });
+                boolean anyVisible = false;
+                for (Component articleComponent : articleButtons) {
+                    if (articleComponent instanceof JButton) {
+                        JButton articleButton = (JButton) articleComponent;
+                        String buttonText = articleButton.getText().toLowerCase();
+                        boolean matches = buttonText.contains(searchTerm.toLowerCase());
 
-        addCategory(contentPanel, "Birds", new String[]{
-                "How to Train Your Parrot",
-                "Common Bird Illnesses",
-                "Choosing the Right Bird Cage",
-                "What to Feed Your Bird",
-                "Keeping Your Bird Happy"
-        });
+                        // Show matching article button, hide others
+                        articleButton.setVisible(matches);
+                        anyVisible = anyVisible || matches;
+                    }
+                }
 
-        addCategory(contentPanel, "Fish", new String[]{
-                "Setting Up Your Aquarium",
-                "Caring for Goldfish",
-                "Maintaining Water Quality",
-                "Feeding Your Fish",
-                "Aquarium Decoration Ideas"
-        });
+                // Ensure the category panel remains visible if at least one button is visible
+                categoryPanel.setVisible(anyVisible);
+            }
+        }
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
 
-        addCategory(contentPanel, "Rabbits", new String[]{
-                "Creating a Rabbit-Friendly Home",
-                "Rabbit Diet Essentials",
-                "How to Handle Your Rabbit",
-                "Common Rabbit Diseases",
-                "Bonding with Your Rabbit"
-        });
+    // Method to reset the search field and display all articles
+    private void resetSearch() {
+        searchField.setText("");
+        filterArticles("");
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PetCareArticles::new);
     }
 }
+
+
+

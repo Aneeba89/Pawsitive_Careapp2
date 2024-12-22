@@ -1,9 +1,4 @@
 package com.pawsitivecare;
-
-
-
-
-
 import javax.swing.*;
         import java.awt.*;
 
@@ -12,7 +7,7 @@ public class Article_DogBehaviour extends JFrame {
     public Article_DogBehaviour() {
         // Set up the frame
         setTitle("Understanding Dog Behavior");
-        setSize(900, 800); // Match size with other pages
+        setSize(800, 700); // Match size with other pages
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 

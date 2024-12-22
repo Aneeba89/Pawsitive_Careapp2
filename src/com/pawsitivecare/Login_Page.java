@@ -1,15 +1,15 @@
 package com.pawsitivecare;
 
 import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.ActionEvent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-class Login_Page extends JFrame {
+public class Login_Page extends JFrame {
     private JPanel contentPane;
     private JTextField textField;
     private JPasswordField passwordField;
@@ -17,10 +17,10 @@ class Login_Page extends JFrame {
 
     public Login_Page() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 900, 800);
+        setBounds(100, 100, 850, 700);
 
         // Load the background image
-        backgroundImage = new ImageIcon("C:\\Users\\IDEAL\\OneDrive\\Desktop\\img_paws.jpg").getImage();
+        backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\Aneeba Project 062\\SCDproject\\img_pet4.jpg").getImage();
 
         // Set up the content pane
         contentPane = new JPanel() {
@@ -82,12 +82,25 @@ class Login_Page extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = textField.getText();
                 String password = new String(passwordField.getPassword());
-                if (validateLogin(username, password)) {
-                    JOptionPane.showMessageDialog(Login_Page.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    // Navigate to the next screen (e.g., dashboard)
-                } else {
-                    JOptionPane.showMessageDialog(Login_Page.this, "Invalid Credentials", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+
+                // Run the login validation in a separate thread
+                new Thread(() -> {
+                    boolean isValid = validateLogin(username, password);
+
+                    // Update the UI on the Event Dispatch Thread
+                    SwingUtilities.invokeLater(() -> {
+                        if (isValid) {
+                            JOptionPane.showMessageDialog(Login_Page.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                            // Close the login page
+                            dispose();
+                            // Open the "Our Services" page
+                            new Our_Services_Page().setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(Login_Page.this, "Invalid Credentials", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    });
+                }).start();
             }
         });
 
@@ -117,12 +130,13 @@ class Login_Page extends JFrame {
         // Back button action listener
         backButton.addActionListener(e -> {
             dispose();
-            // Navigate to the welcome page
+            // Navigate to the welcome page (you can modify this logic as needed)
         });
     }
 
-    private boolean validateLogin(String username, String password) {
-        String url = "jdbc:sqlserver://DESKTOP-GDTK610\\SQLEXPRESS01;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Aneeba12;password=Anikhan1234;";
+    // Method to validate login credentials against the database
+    public boolean validateLogin(String username, String password) {
+        String url = "jdbc:sqlserver://Javeria\\SQLEXPRESS;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Javeria;password=JAVERIANOOR123";
         String query = "SELECT * FROM login WHERE username = '" + username + "' AND password = '" + password + "'";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -131,11 +145,14 @@ class Login_Page extends JFrame {
 
             return rs.next(); // Returns true if a match is found
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Database Connection Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            SwingUtilities.invokeLater(() ->
+                    JOptionPane.showMessageDialog(this, "Database Connection Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE)
+            );
             return false;
         }
     }
 
+    // Main method to launch the login page
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Login_Page().setVisible(true));
     }

@@ -11,7 +11,7 @@ public class Article_TrainingBasics extends JFrame {
     public Article_TrainingBasics() {
         // Set the frame properties
         setTitle("Dog Training Basics - Pawsitive Care");
-        setSize(800, 600);
+        setSize(800, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
