@@ -182,7 +182,12 @@ public class Our_Services_Page extends JFrame {
         healthRecordButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Navigate to Pet Health Record Tracker Page"));
         careTipsButton.addActionListener(e -> PetCareArticles.main(new String[]{})); // Open the "pet articles" page
         emergencyContactsButton.addActionListener(e -> Emrgency_Rescue_Page.main(new String[]{})); // Open the "Emergency Rescue Contacts" page
-        symptomCheckerButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Navigate to Symptom Checker Page"));
+     // action listener for Symptom Checker button
+        symptomCheckerButton.addActionListener(e -> {
+            Symptom_Checker symptomCheckerPage = new Symptom_Checker(this); // Pass the current frame as the previous frame
+            symptomCheckerPage.setVisible(true); // Show the Symptom Checker page
+            setVisible(false); // Hide the current frame
+        });
 
         // Add "Back" button
         JButton backButton = new JButton("Back");
