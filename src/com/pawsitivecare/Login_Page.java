@@ -1,3 +1,4 @@
+
 package com.pawsitivecare;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class Login_Page extends JFrame {
         setBounds(100, 100, 850, 700);
 
         // Load the background image
-        backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\Aneeba Project 062\\SCDproject\\img_pet4.jpg").getImage();
+        backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\pic3.jpg").getImage();
 
         // Set up the content pane
         contentPane = new JPanel() {
@@ -38,14 +39,14 @@ public class Login_Page extends JFrame {
         JLabel lblNewLabel = new JLabel("Login Page");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setFont(new Font("Papyrus", Font.BOLD, 44));
-        lblNewLabel.setForeground(new Color(191, 128, 64)); // Adjusted text color
-        lblNewLabel.setBounds(-10, 50, 900, 80); // Centered at the top
+        lblNewLabel.setForeground(new Color(0, 0, 0));
+        lblNewLabel.setBounds(-10, 50, 900, 80);
         contentPane.add(lblNewLabel);
 
         // Username label
         JLabel lblNewLabel_1 = new JLabel("Username*");
-        lblNewLabel_1.setFont(new Font("Papyrus", Font.BOLD, 14));
-        lblNewLabel_1.setForeground(new Color(191, 128, 64)); // Adjusted text color
+        lblNewLabel_1.setFont(new Font("Papyrus", Font.BOLD, 16));
+        lblNewLabel_1.setForeground(new Color(0, 0, 0));
         lblNewLabel_1.setBounds(300, 250, 100, 19);
         contentPane.add(lblNewLabel_1);
 
@@ -57,8 +58,8 @@ public class Login_Page extends JFrame {
 
         // Password label
         JLabel lblNewLabel_2 = new JLabel("Password*");
-        lblNewLabel_2.setFont(new Font("Papyrus", Font.BOLD, 14));
-        lblNewLabel_2.setForeground(new Color(191, 128, 64)); // Adjusted text color
+        lblNewLabel_2.setFont(new Font("Papyrus", Font.BOLD, 16));
+        lblNewLabel_2.setForeground(new Color(0, 0, 0));
         lblNewLabel_2.setBounds(300, 320, 100, 19);
         contentPane.add(lblNewLabel_2);
 
@@ -83,18 +84,12 @@ public class Login_Page extends JFrame {
                 String username = textField.getText();
                 String password = new String(passwordField.getPassword());
 
-                // Run the login validation in a separate thread
                 new Thread(() -> {
                     boolean isValid = validateLogin(username, password);
-
-                    // Update the UI on the Event Dispatch Thread
                     SwingUtilities.invokeLater(() -> {
                         if (isValid) {
                             JOptionPane.showMessageDialog(Login_Page.this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                            // Close the login page
                             dispose();
-                            // Open the "Our Services" page
                             new Our_Services_Page().setVisible(true);
                         } else {
                             JOptionPane.showMessageDialog(Login_Page.this, "Invalid Credentials", "Error", JOptionPane.ERROR_MESSAGE);
@@ -113,7 +108,6 @@ public class Login_Page extends JFrame {
         btnNewButton_1.setFocusable(false);
         contentPane.add(btnNewButton_1);
 
-        // Reset button action listener
         btnNewButton_1.addActionListener(e -> {
             textField.setText(null);
             passwordField.setText(null);
@@ -124,17 +118,29 @@ public class Login_Page extends JFrame {
         backButton.setFont(new Font("Papyrus", Font.BOLD, 14));
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(new Color(0, 0, 0));
-        backButton.setBounds(400, 600, 100, 30);
+        backButton.setBounds(400, 550, 100, 30);
         contentPane.add(backButton);
 
-        // Back button action listener
         backButton.addActionListener(e -> {
             dispose();
-            // Navigate to the welcome page (you can modify this logic as needed)
         });
+
+
+        // FAQ button
+        JButton faqButton = new JButton("FAQ");
+        faqButton.setFont(new Font("Papyrus", Font.BOLD, 14));
+        faqButton.setForeground(Color.WHITE);
+        faqButton.setBackground(new Color(0, 0, 0)); // Green color for FAQ button
+        faqButton.setBounds(400, 500, 100, 30); // Position below the other buttons
+        contentPane.add(faqButton);
+
+// FAQ button action listener
+        faqButton.addActionListener(e -> {
+            new client().setVisible(true);
+        });
+
     }
 
-    // Method to validate login credentials against the database
     public boolean validateLogin(String username, String password) {
         String url = "jdbc:sqlserver://Javeria\\SQLEXPRESS;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Javeria;password=JAVERIANOOR123";
         String query = "SELECT * FROM login WHERE username = '" + username + "' AND password = '" + password + "'";
@@ -143,7 +149,7 @@ public class Login_Page extends JFrame {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
-            return rs.next(); // Returns true if a match is found
+            return rs.next();
         } catch (Exception ex) {
             SwingUtilities.invokeLater(() ->
                     JOptionPane.showMessageDialog(this, "Database Connection Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE)
@@ -152,7 +158,6 @@ public class Login_Page extends JFrame {
         }
     }
 
-    // Main method to launch the login page
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Login_Page().setVisible(true));
     }

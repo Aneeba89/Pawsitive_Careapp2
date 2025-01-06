@@ -13,7 +13,7 @@ public class Welcome_Page extends JFrame {
         setLocationRelativeTo(null); // Center the frame
 
         // Load background image
-        Image backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\Aneeba Project 062\\SCDproject\\PET_IMG7.jpg").getImage();
+        Image backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\pic2.jpg").getImage();
 
         // Create a custom JPanel with background painting
         JPanel contentPane = new JPanel() {

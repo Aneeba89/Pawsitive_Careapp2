@@ -20,7 +20,7 @@ public class Signup_Page extends JFrame {
         setBounds(100, 100, 800, 700);
 
         // Load the background image
-        Image backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\Aneeba Project 062\\SCDproject\\img_pet4.jpg").getImage();
+        Image backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\pic3.jpg").getImage();
 
         // Set up the content pane
         contentPane = new JPanel() {
@@ -38,14 +38,14 @@ public class Signup_Page extends JFrame {
         JLabel titleLabel = new JLabel("Signup Page");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Papyrus", Font.BOLD, 44));
-        titleLabel.setForeground(new Color(191, 128, 64));
+        titleLabel.setForeground(new Color(0, 0, 0));
         titleLabel.setBounds(-10, 50, 900, 80);
         contentPane.add(titleLabel);
 
         // Username label
         JLabel usernameLabel = new JLabel("Username*");
-        usernameLabel.setFont(new Font("Papyrus", Font.BOLD, 14));
-        usernameLabel.setForeground(new Color(191, 128, 64));
+        usernameLabel.setFont(new Font("Papyrus", Font.BOLD, 16));
+        usernameLabel.setForeground(new Color(0, 0, 0));
         usernameLabel.setBounds(300, 250, 100, 19);
         contentPane.add(usernameLabel);
 
@@ -56,8 +56,8 @@ public class Signup_Page extends JFrame {
 
         // Password label
         JLabel passwordLabel = new JLabel("Password*");
-        passwordLabel.setFont(new Font("Papyrus", Font.BOLD, 14));
-        passwordLabel.setForeground(new Color(191, 128, 64));
+        passwordLabel.setFont(new Font("Papyrus", Font.BOLD, 16));
+        passwordLabel.setForeground(new Color(0, 0, 0));
         passwordLabel.setBounds(300, 320, 100, 19);
         contentPane.add(passwordLabel);
 
@@ -68,8 +68,8 @@ public class Signup_Page extends JFrame {
 
         // Email label
         JLabel emailLabel = new JLabel("Email*");
-        emailLabel.setFont(new Font("Papyrus", Font.BOLD, 14));
-        emailLabel.setForeground(new Color(191, 128, 64));
+        emailLabel.setFont(new Font("Papyrus", Font.BOLD, 16));
+        emailLabel.setForeground(new Color(0, 0, 0));
         emailLabel.setBounds(300, 390, 100, 19);
         contentPane.add(emailLabel);
 
@@ -105,7 +105,7 @@ public class Signup_Page extends JFrame {
         backButton.setFont(new Font("Papyrus", Font.BOLD, 14));
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(new Color(0, 0, 0));
-        backButton.setBounds(400, 600, 100, 30);
+        backButton.setBounds(400, 550, 100, 30);
         contentPane.add(backButton);
 
         backButton.addActionListener(e -> dispose());

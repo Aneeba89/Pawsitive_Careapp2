@@ -1,27 +1,512 @@
+///*package com.pawsitivecare;
+//
+//import javax.swing.*;
+//import java.awt.*;
+//import java.sql.*;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
+//
+//public class PetHealthRecordTracker extends JFrame {
+//
+//    private JTextField petNameField, petAgeField, petBreedField, petAllergiesField, petDiseasesField, lastVetVisitField;
+//    private JButton editButton, deleteButton, saveButton, backButton;
+//    private final int userId;
+//
+//    public PetHealthRecordTracker(int userId) {
+//        this.userId = userId;
+//
+//        setTitle("Pet Health Record Tracker");
+//        setSize(800, 700);
+//        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        setLocationRelativeTo(null);
+//
+//        // Custom JPanel for background
+//        Image backgroundImage = new ImageIcon("C:\\path\\to\\img_paws.jpg").getImage();
+//        JPanel contentPanel = new JPanel() {
+//            @Override
+//            protected void paintComponent(Graphics g) {
+//                super.paintComponent(g);
+//                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+//            }
+//        };
+//        contentPanel.setLayout(new GridBagLayout());
+//        setContentPane(contentPanel);
+//
+//        // Title Label
+//        JLabel titleLabel = new JLabel("Pet Details", JLabel.CENTER);
+//        titleLabel.setFont(new Font("Papyrus", Font.BOLD, 30));
+//        GridBagConstraints gbcTitle = new GridBagConstraints();
+//        gbcTitle.gridx = 0;
+//        gbcTitle.gridy = 0;
+//        gbcTitle.gridwidth = 2;
+//        gbcTitle.insets = new Insets(20, 100, 70, 10);
+//        contentPanel.add(titleLabel, gbcTitle);
+//
+//        // Add Fields
+//        addField(contentPanel, "Pet Name:", petNameField = new JTextField(20), 1);
+//        addField(contentPanel, "Pet Age:", petAgeField = new JTextField(20), 2);
+//        addField(contentPanel, "Pet Breed:", petBreedField = new JTextField(20), 3);
+//        addField(contentPanel, "Allergies:", petAllergiesField = new JTextField(20), 4);
+//        addField(contentPanel, "Diseases:", petDiseasesField = new JTextField(20), 5);
+//        addField(contentPanel, "Last Vet Visit:", lastVetVisitField = new JTextField(20), 6);
+//
+//        // Add Buttons
+//        editButton = createButton("Edit", 150);
+//        saveButton = createButton("Save", 150);
+//        deleteButton = createButton("Delete", 150);
+//        backButton = createButton("Back", 150);
+//
+//        GridBagConstraints gbcButton = new GridBagConstraints();
+//        gbcButton.insets = new Insets(20, 20, 20, 20);
+//        gbcButton.anchor = GridBagConstraints.CENTER;
+//
+//        gbcButton.gridx = 0;
+//        gbcButton.gridy = 7;
+//        contentPanel.add(editButton, gbcButton);
+//
+//        gbcButton.gridx = 1;
+//        contentPanel.add(saveButton, gbcButton);
+//
+//        gbcButton.gridx = 2;
+//        contentPanel.add(deleteButton, gbcButton);
+//
+//        gbcButton.gridx = 1;
+//        gbcButton.gridy = 8;
+//        contentPanel.add(backButton, gbcButton);
+//
+//        // Disable Fields Initially
+//        setFieldsEditable(false);
+//
+//        // Load Data
+//        loadPetData();
+//
+//        // Button Actions
+//        editButton.addActionListener(e -> setFieldsEditable(true));
+//        saveButton.addActionListener(e -> savePetData());
+//        deleteButton.addActionListener(e -> deletePetData());
+//        backButton.addActionListener(e -> dispose());
+//    }
+//
+//    private void addField(JPanel panel, String labelText, JTextField field, int y) {
+//        GridBagConstraints gbcLabel = new GridBagConstraints();
+//        gbcLabel.gridx = 0;
+//        gbcLabel.gridy = y;
+//        gbcLabel.anchor = GridBagConstraints.WEST;
+//        gbcLabel.insets = new Insets(10, 10, 10, 10);
+//
+//        JLabel label = new JLabel(labelText);
+//        label.setFont(new Font("Papyrus", Font.BOLD, 18));
+//        panel.add(label, gbcLabel);
+//
+//        GridBagConstraints gbcField = new GridBagConstraints();
+//        gbcField.gridx = 1;
+//        gbcField.gridy = y;
+//        gbcField.fill = GridBagConstraints.HORIZONTAL;
+//        gbcField.insets = new Insets(10, 10, 10, 10);
+//
+//        field.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+//        panel.add(field, gbcField);
+//    }
+//
+//    private JButton createButton(String text, int width) {
+//        JButton button = new JButton(text);
+//        button.setPreferredSize(new Dimension(width, 40));
+//        return button;
+//    }
+//
+//    private void setFieldsEditable(boolean editable) {
+//        petNameField.setEditable(editable);
+//        petAgeField.setEditable(editable);
+//        petBreedField.setEditable(editable);
+//        petAllergiesField.setEditable(editable);
+//        petDiseasesField.setEditable(editable);
+//        lastVetVisitField.setEditable(editable);
+//    }
+//
+//    private void loadPetData() {
+//        String query = "SELECT pet_name, pet_age, pet_breed, pet_allergies, pet_diseases, last_vet_visit FROM PetHealthRecords WHERE user_id = " + userId;
+//        try (Connection conn = createConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+//            if (rs.next()) {
+//                petNameField.setText(rs.getString("pet_name"));
+//                petAgeField.setText(String.valueOf(rs.getInt("pet_age")));
+//                petBreedField.setText(rs.getString("pet_breed"));
+//                petAllergiesField.setText(rs.getString("pet_allergies"));
+//                petDiseasesField.setText(rs.getString("pet_diseases"));
+//                lastVetVisitField.setText(rs.getString("last_vet_visit"));
+//            } else {
+//                JOptionPane.showMessageDialog(this, "No pet record found for this user.", "Error", JOptionPane.ERROR_MESSAGE);
+//            }
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(this, "Error loading pet data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//    private void savePetData() {
+//        if (!validateFields()) {
+//            return; // Exit if validation fails
+//        }
+//
+//        String query = "UPDATE PetHealthRecords SET pet_name = '" + petNameField.getText() +
+//                "', pet_age = " + petAgeField.getText() +
+//                ", pet_breed = '" + petBreedField.getText() +
+//                "', pet_allergies = '" + petAllergiesField.getText() +
+//                "', pet_diseases = '" + petDiseasesField.getText() +
+//                "', last_vet_visit = '" + lastVetVisitField.getText() +
+//                "' WHERE user_id = " + userId;
+//
+//        System.out.println("Generated SQL Query: " + query); // Debug: Print the query
+//
+//        try (Connection conn = createConnection(); Statement stmt = conn.createStatement()) {
+//            int rows = stmt.executeUpdate(query);
+//            if (rows > 0) {
+//                JOptionPane.showMessageDialog(this, "Pet data updated successfully.");
+//            } else {
+//                JOptionPane.showMessageDialog(this, "No record updated. Check user ID.", "Update Failed", JOptionPane.ERROR_MESSAGE);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace(); // Print detailed error information
+//            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//
+//    private void deletePetData() {
+//        String query = "DELETE FROM PetHealthRecords WHERE user_id = " + userId;
+//        try (Connection conn = createConnection(); Statement stmt = conn.createStatement()) {
+//            int rows = stmt.executeUpdate(query);
+//            if (rows > 0) {
+//                JOptionPane.showMessageDialog(this, "Pet record deleted successfully.");
+//                dispose();
+//            } else {
+//                JOptionPane.showMessageDialog(this, "No record deleted. Check user ID.", "Deletion Failed", JOptionPane.ERROR_MESSAGE);
+//            }
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//    private boolean validateFields() {
+//        if (petNameField.getText().trim().isEmpty() ||
+//                petAgeField.getText().trim().isEmpty() ||
+//                petBreedField.getText().trim().isEmpty() ||
+//                petAllergiesField.getText().trim().isEmpty() ||
+//                petDiseasesField.getText().trim().isEmpty() ||
+//                lastVetVisitField.getText().trim().isEmpty()) {
+//
+//            JOptionPane.showMessageDialog(this, "All fields must be filled!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+//            return false;
+//        }
+//
+//        try {
+//            int age = Integer.parseInt(petAgeField.getText());
+//            if (age < 0) {
+//                JOptionPane.showMessageDialog(this, "Age must be a positive number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+//                return false;
+//            }
+//        } catch (NumberFormatException e) {
+//            JOptionPane.showMessageDialog(this, "Age must be a valid number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+//            return false;
+//        }
+//
+//        if (!isValidDate(lastVetVisitField.getText())) {
+//            JOptionPane.showMessageDialog(this, "Last Vet Visit must be in YYYY-MM-DD format!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+//            return false;
+//        }
+//
+//        return true;
+//    }
+//
+//    private boolean isValidDate(String date) {
+//        try {
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//            sdf.setLenient(false);
+//            sdf.parse(date);
+//            return true;
+//        } catch (ParseException e) {
+//            return false;
+//        }
+//    }
+//
+//    private Connection createConnection() throws SQLException {
+//        // Replace with your database credentials and URL
+//        String url = "jdbc:sqlserver://Javeria\\SQLEXPRESS;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Javeria;password=JAVERIANOOR123";
+//        String username = "Javeria";
+//        String password = "JAVERIANOOR123";
+//        return DriverManager.getConnection(url, username, password);
+//    }
+//
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> new PetHealthRecordTracker(1).setVisible(true));
+//    }
+//}*/
+//
+//package com.pawsitivecare;
+//
+//import javax.swing.*;
+//import java.awt.*;
+//import java.sql.*;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
+//
+//public class PetHealthRecordTracker extends JFrame {
+//
+//    private JTextField petNameField, petAgeField, petBreedField, petAllergiesField, petDiseasesField, lastVetVisitField;
+//    private JButton editButton, deleteButton, saveButton, backButton;
+//    private final int userId;
+//
+//    public PetHealthRecordTracker(int userId) {
+//        this.userId = userId;
+//
+//        setTitle("Pet Health Record Tracker");
+//        setSize(800, 700);
+//        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        setLocationRelativeTo(null);
+//
+//        // Custom JPanel for background
+//        Image backgroundImage = new ImageIcon("C:\\path\\to\\img_paws.jpg").getImage();
+//        JPanel contentPanel = new JPanel() {
+//            @Override
+//            protected void paintComponent(Graphics g) {
+//                super.paintComponent(g);
+//                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+//            }
+//        };
+//        contentPanel.setLayout(new GridBagLayout());
+//        setContentPane(contentPanel);
+//
+//        // Title Label
+//        JLabel titleLabel = new JLabel("Pet Details", JLabel.CENTER);
+//        titleLabel.setFont(new Font("Papyrus", Font.BOLD, 30));
+//        GridBagConstraints gbcTitle = new GridBagConstraints();
+//        gbcTitle.gridx = 0;
+//        gbcTitle.gridy = 0;
+//        gbcTitle.gridwidth = 2;
+//        gbcTitle.insets = new Insets(20, 100, 70, 10);
+//        contentPanel.add(titleLabel, gbcTitle);
+//
+//        // Add Fields
+//        addField(contentPanel, "Pet Name:", petNameField = new JTextField(20), 1);
+//        addField(contentPanel, "Pet Age:", petAgeField = new JTextField(20), 2);
+//        addField(contentPanel, "Pet Breed:", petBreedField = new JTextField(20), 3);
+//        addField(contentPanel, "Allergies:", petAllergiesField = new JTextField(20), 4);
+//        addField(contentPanel, "Diseases:", petDiseasesField = new JTextField(20), 5);
+//        addField(contentPanel, "Last Vet Visit:", lastVetVisitField = new JTextField(20), 6);
+//
+//        // Add Buttons
+//        editButton = createButton("Edit", 150);
+//        saveButton = createButton("Save", 150);
+//        deleteButton = createButton("Delete", 150);
+//        backButton = createButton("Back", 150);
+//
+//        GridBagConstraints gbcButton = new GridBagConstraints();
+//        gbcButton.insets = new Insets(20, 20, 20, 20);
+//        gbcButton.anchor = GridBagConstraints.CENTER;
+//
+//        gbcButton.gridx = 0;
+//        gbcButton.gridy = 7;
+//        contentPanel.add(editButton, gbcButton);
+//
+//        gbcButton.gridx = 1;
+//        contentPanel.add(saveButton, gbcButton);
+//
+//        gbcButton.gridx = 2;
+//        contentPanel.add(deleteButton, gbcButton);
+//
+//        gbcButton.gridx = 1;
+//        gbcButton.gridy = 8;
+//        contentPanel.add(backButton, gbcButton);
+//
+//        // Disable Fields Initially
+//        setFieldsEditable(false);
+//
+//        // Load Data
+//        loadPetData();
+//
+//        // Button Actions
+//        editButton.addActionListener(e -> setFieldsEditable(true));
+//        saveButton.addActionListener(e -> savePetData());
+//        deleteButton.addActionListener(e -> deletePetData());
+//        backButton.addActionListener(e -> dispose());
+//    }
+//
+//    private void addField(JPanel panel, String labelText, JTextField field, int y) {
+//        GridBagConstraints gbcLabel = new GridBagConstraints();
+//        gbcLabel.gridx = 0;
+//        gbcLabel.gridy = y;
+//        gbcLabel.anchor = GridBagConstraints.WEST;
+//        gbcLabel.insets = new Insets(10, 10, 10, 10);
+//
+//        JLabel label = new JLabel(labelText);
+//        label.setFont(new Font("Papyrus", Font.BOLD, 18));
+//        panel.add(label, gbcLabel);
+//
+//        GridBagConstraints gbcField = new GridBagConstraints();
+//        gbcField.gridx = 1;
+//        gbcField.gridy = y;
+//        gbcField.fill = GridBagConstraints.HORIZONTAL;
+//        gbcField.insets = new Insets(10, 10, 10, 10);
+//
+//        field.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+//        panel.add(field, gbcField);
+//    }
+//
+//    private JButton createButton(String text, int width) {
+//        JButton button = new JButton(text);
+//        button.setPreferredSize(new Dimension(width, 40));
+//        return button;
+//    }
+//
+//    private void setFieldsEditable(boolean editable) {
+//        petNameField.setEditable(editable);
+//        petAgeField.setEditable(editable);
+//        petBreedField.setEditable(editable);
+//        petAllergiesField.setEditable(editable);
+//        petDiseasesField.setEditable(editable);
+//        lastVetVisitField.setEditable(editable);
+//    }
+//
+//    private void loadPetData() {
+//        String query = "SELECT pet_name, pet_age, pet_breed, pet_allergies, pet_diseases, last_vet_visit FROM PetHealthRecords WHERE user_id = " + userId;
+//        try (Connection conn = createConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+//            if (rs.next()) {
+//                petNameField.setText(rs.getString("pet_name"));
+//                petAgeField.setText(String.valueOf(rs.getInt("pet_age")));
+//                petBreedField.setText(rs.getString("pet_breed"));
+//                petAllergiesField.setText(rs.getString("pet_allergies"));
+//                petDiseasesField.setText(rs.getString("pet_diseases"));
+//                lastVetVisitField.setText(rs.getString("last_vet_visit"));
+//            } else {
+//                JOptionPane.showMessageDialog(this, "No pet record found for this user.", "Error", JOptionPane.ERROR_MESSAGE);
+//            }
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(this, "Error loading pet data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//    private void savePetData() {
+//        if (!validateFields()) {
+//            return; // Exit if validation fails
+//        }
+//
+//        String query = "UPDATE PetHealthRecords SET pet_name = ?, pet_age = ?, pet_breed = ?, pet_allergies = ?, pet_diseases = ?, last_vet_visit = ? WHERE user_id = ?";
+//
+//        try (Connection conn = createConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+//            pstmt.setString(1, petNameField.getText());
+//            pstmt.setInt(2, Integer.parseInt(petAgeField.getText()));
+//            pstmt.setString(3, petBreedField.getText());
+//            pstmt.setString(4, petAllergiesField.getText());
+//            pstmt.setString(5, petDiseasesField.getText());
+//            pstmt.setString(6, lastVetVisitField.getText());
+//            pstmt.setInt(7, userId);
+//
+//            int rows = pstmt.executeUpdate();
+//            if (rows > 0) {
+//                JOptionPane.showMessageDialog(this, "Pet data updated successfully.");
+//            } else {
+//                JOptionPane.showMessageDialog(this, "No record updated. Check user ID.", "Update Failed", JOptionPane.ERROR_MESSAGE);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace(); // Print detailed error information
+//            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//
+//    private void deletePetData() {
+//        String query = "DELETE FROM PetHealthRecords WHERE user_id = " + userId;
+//        try (Connection conn = createConnection(); Statement stmt = conn.createStatement()) {
+//            int rows = stmt.executeUpdate(query);
+//            if (rows > 0) {
+//                JOptionPane.showMessageDialog(this, "Pet record deleted successfully.");
+//                dispose();
+//            } else {
+//                JOptionPane.showMessageDialog(this, "No record deleted. Check user ID.", "Deletion Failed", JOptionPane.ERROR_MESSAGE);
+//            }
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//    private boolean validateFields() {
+//        if (petNameField.getText().trim().isEmpty() ||
+//                petAgeField.getText().trim().isEmpty() ||
+//                petBreedField.getText().trim().isEmpty() ||
+//                petAllergiesField.getText().trim().isEmpty() ||
+//                petDiseasesField.getText().trim().isEmpty() ||
+//                lastVetVisitField.getText().trim().isEmpty()) {
+//
+//            JOptionPane.showMessageDialog(this, "All fields must be filled!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+//            return false;
+//        }
+//
+//        try {
+//            int age = Integer.parseInt(petAgeField.getText());
+//            if (age < 0) {
+//                JOptionPane.showMessageDialog(this, "Age must be a positive number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+//                return false;
+//            }
+//        } catch (NumberFormatException e) {
+//            JOptionPane.showMessageDialog(this, "Age must be a valid number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+//            return false;
+//        }
+//
+//        if (!isValidDate(lastVetVisitField.getText())) {
+//            JOptionPane.showMessageDialog(this, "Last Vet Visit must be in YYYY-MM-DD format!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+//            return false;
+//        }
+//
+//        return true;
+//    }
+//
+//    private boolean isValidDate(String date) {
+//        try {
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//            sdf.setLenient(false);
+//            sdf.parse(date);
+//            return true;
+//        } catch (ParseException e) {
+//            return false;
+//        }
+//    }
+//
+//    private Connection createConnection() throws SQLException {
+//        // Replace with your database credentials and URL
+//        String url = "jdbc:sqlserver://Javeria\\SQLEXPRESS;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Javeria;password=JAVERIANOOR123";
+//        String username = "Javeria";
+//        String password = "JAVERIANOOR123";
+//        return DriverManager.getConnection(url, username, password);
+//    }
+//
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> new PetHealthRecordTracker(1).setVisible(true));
+//    }
+//}
+//
+
 package com.pawsitivecare;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class PetHealthRecordTracker extends JFrame {
 
     private JTextField petNameField, petAgeField, petBreedField, petAllergiesField, petDiseasesField, lastVetVisitField;
     private JButton editButton, deleteButton, saveButton, backButton;
-    private int userId; // To store the logged-in user's id
+    private final int userId;
 
     public PetHealthRecordTracker(int userId) {
-        this.userId = userId;  // Set the user_id based on the logged-in user
+        this.userId = userId;
 
         setTitle("Pet Health Record Tracker");
-        setSize(800, 700); // Set the size to match the Welcome_Page size
+        setSize(800, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the frame
+        setLocationRelativeTo(null);
 
-        // Create a custom JPanel with background painting
-        Image backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\Aneeba Project 062\\SCDproject\\img_paws.jpg").getImage();
+        // Custom JPanel for background
+        Image backgroundImage = new ImageIcon("C:\\path\\to\\img_paws.jpg").getImage();
         JPanel contentPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -29,87 +514,37 @@ public class PetHealthRecordTracker extends JFrame {
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
-        contentPanel.setLayout(new GridBagLayout()); // Use GridBagLayout for better field placement
-        setContentPane(contentPanel); // Set the custom panel as the content pane
+        contentPanel.setLayout(new GridBagLayout());
+        setContentPane(contentPanel);
 
-        // Define font for labels and text fields
-        Font fieldFont = new Font("Segoe UI", Font.PLAIN, 16); // Font for labels and fields
-
-        // Create the "Pet Details" label and add it at the top center
+        // Title Label
         JLabel titleLabel = new JLabel("Pet Details", JLabel.CENTER);
-        titleLabel.setFont(new Font("Papyrus", Font.BOLD, 30)); // Set font for title
+        titleLabel.setFont(new Font("Papyrus", Font.BOLD, 30));
         GridBagConstraints gbcTitle = new GridBagConstraints();
         gbcTitle.gridx = 0;
         gbcTitle.gridy = 0;
-        gbcTitle.gridwidth = 2;  // Make it span across multiple columns
-        gbcTitle.insets = new Insets(20, 100, 70, 10); // Add some padding
+        gbcTitle.gridwidth = 2;
+        gbcTitle.insets = new Insets(20, 100, 70, 10);
         contentPanel.add(titleLabel, gbcTitle);
 
-        // Pet health details labels and text fields
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Padding for better spacing
+        // Add Fields
+        addField(contentPanel, "Pet Name:", petNameField = new JTextField(20), 1);
+        addField(contentPanel, "Pet Age:", petAgeField = new JTextField(20), 2);
+        addField(contentPanel, "Pet Breed:", petBreedField = new JTextField(20), 3);
+        addField(contentPanel, "Allergies:", petAllergiesField = new JTextField(20), 4);
+        addField(contentPanel, "Diseases:", petDiseasesField = new JTextField(20), 5);
+        addField(contentPanel, "Last Vet Visit:", lastVetVisitField = new JTextField(20), 6);
 
-        JLabel petNameLabel = new JLabel("Pet Name:");
-        petNameLabel.setFont(new Font("Papyrus", Font.BOLD, 18)); // Set font for labels
-        contentPanel.add(petNameLabel, getConstraints(0, 1));
-        petNameField = new JTextField(20);  // Adjusted size for the text field
-        petNameField.setFont(fieldFont);  // Set font for text fields
-        contentPanel.add(petNameField, getConstraints(1, 1));
+        // Add Buttons
+        editButton = createButton("Edit", 150);
+        saveButton = createButton("Save", 150);
+        deleteButton = createButton("Delete", 150);
+        backButton = createButton("Back", 150);
 
-        JLabel petAgeLabel = new JLabel("Pet Age:");
-        petAgeLabel.setFont(new Font("Papyrus", Font.BOLD, 18)); // Set font for labels
-        contentPanel.add(petAgeLabel, getConstraints(0, 2));
-        petAgeField = new JTextField(20);  // Adjusted size for the text field
-        petAgeField.setFont(fieldFont);  // Set font for text fields
-        contentPanel.add(petAgeField, getConstraints(1, 2));
-
-        JLabel petBreedLabel = new JLabel("Pet Breed:");
-        petBreedLabel.setFont(new Font("Papyrus", Font.BOLD, 18)); // Set font for labels
-        contentPanel.add(petBreedLabel, getConstraints(0, 3));
-        petBreedField = new JTextField(20);  // Adjusted size for the text field
-        petBreedField.setFont(fieldFont);  // Set font for text fields
-        contentPanel.add(petBreedField, getConstraints(1, 3));
-
-        JLabel petAllergiesLabel = new JLabel("Allergies:");
-        petAllergiesLabel.setFont(new Font("Papyrus", Font.BOLD, 18)); // Set font for labels
-        contentPanel.add(petAllergiesLabel, getConstraints(0, 4));
-        petAllergiesField = new JTextField(20);  // Adjusted size for the text field
-        petAllergiesField.setFont(fieldFont);  // Set font for text fields
-        contentPanel.add(petAllergiesField, getConstraints(1, 4));
-
-        JLabel petDiseasesLabel = new JLabel("Diseases:");
-        petDiseasesLabel.setFont(new Font("Papyrus", Font.BOLD, 18)); // Set font for labels
-        contentPanel.add(petDiseasesLabel, getConstraints(0, 5));
-        petDiseasesField = new JTextField(20);  // Adjusted size for the text field
-        petDiseasesField.setFont(fieldFont);  // Set font for text fields
-        contentPanel.add(petDiseasesField, getConstraints(1, 5));
-
-        JLabel lastVetVisitLabel = new JLabel("Last Vet Visit:");
-        lastVetVisitLabel.setFont(new Font("Papyrus", Font.BOLD, 18)); // Set font for labels
-        contentPanel.add(lastVetVisitLabel, getConstraints(0, 6));
-        lastVetVisitField = new JTextField(20);  // Adjusted size for the text field
-        lastVetVisitField.setFont(fieldFont);  // Set font for text fields
-        contentPanel.add(lastVetVisitField, getConstraints(1, 6));
-
-        // Create and add buttons for editing, saving, deleting, and going back
-        editButton = new JButton("Edit");
-        saveButton = new JButton("Save");
-        deleteButton = new JButton("Delete");
-        backButton = new JButton("Back");
-
-        // Adjust button size
-        Dimension buttonSize = new Dimension(150, 40);  // Reduced size
-        editButton.setPreferredSize(buttonSize);
-        saveButton.setPreferredSize(buttonSize);
-        deleteButton.setPreferredSize(buttonSize);
-        backButton.setPreferredSize(buttonSize);
-
-        // Button grid constraints (equally spaced)
         GridBagConstraints gbcButton = new GridBagConstraints();
-        gbcButton.insets = new Insets(20, 20, 20, 20); // Add spacing between buttons
+        gbcButton.insets = new Insets(20, 20, 20, 20);
         gbcButton.anchor = GridBagConstraints.CENTER;
 
-        // Add buttons in the grid with equal space
         gbcButton.gridx = 0;
         gbcButton.gridy = 7;
         contentPanel.add(editButton, gbcButton);
@@ -120,58 +555,48 @@ public class PetHealthRecordTracker extends JFrame {
         gbcButton.gridx = 2;
         contentPanel.add(deleteButton, gbcButton);
 
-        // Back button below the other buttons
         gbcButton.gridx = 1;
-        gbcButton.gridy = 8; // Place it below the other buttons
+        gbcButton.gridy = 8;
         contentPanel.add(backButton, gbcButton);
 
-        // Initially disable the fields to avoid accidental edits
+        // Disable Fields Initially
         setFieldsEditable(false);
 
-        // Load the pet data for the user
+        // Load Data
         loadPetData();
 
-        // Action listener for the Edit button
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setFieldsEditable(true); // Enable fields for editing
-            }
-        });
-
-        // Action listener for the Save button
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                savePetData();
-            }
-        });
-
-        // Action listener for the Delete button
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deletePetData();
-            }
-        });
-
-        // Action listener for the Back button
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implement your logic for going back (e.g., navigate to the previous window)
-                dispose(); // This will close the current window
-            }
-        });
+        // Button Actions
+        editButton.addActionListener(e -> setFieldsEditable(true));
+        saveButton.addActionListener(e -> savePetData());
+        deleteButton.addActionListener(e -> deletePetData());
+        backButton.addActionListener(e -> dispose());  // Close only this window
     }
 
-    private GridBagConstraints getConstraints(int x, int y) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = x;
-        gbc.gridy = y;
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.anchor = GridBagConstraints.WEST;
-        return gbc;
+    private void addField(JPanel panel, String labelText, JTextField field, int y) {
+        GridBagConstraints gbcLabel = new GridBagConstraints();
+        gbcLabel.gridx = 0;
+        gbcLabel.gridy = y;
+        gbcLabel.anchor = GridBagConstraints.WEST;
+        gbcLabel.insets = new Insets(10, 10, 10, 10);
+
+        JLabel label = new JLabel(labelText);
+        label.setFont(new Font("Papyrus", Font.BOLD, 18));
+        panel.add(label, gbcLabel);
+
+        GridBagConstraints gbcField = new GridBagConstraints();
+        gbcField.gridx = 1;
+        gbcField.gridy = y;
+        gbcField.fill = GridBagConstraints.HORIZONTAL;
+        gbcField.insets = new Insets(10, 10, 10, 10);
+
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        panel.add(field, gbcField);
+    }
+
+    private JButton createButton(String text, int width) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(width, 40));
+        return button;
     }
 
     private void setFieldsEditable(boolean editable) {
@@ -184,18 +609,9 @@ public class PetHealthRecordTracker extends JFrame {
     }
 
     private void loadPetData() {
-        // Query to fetch pet data for the user
-        String url = "jdbc:sqlserver://Javeria\\SQLEXPRESS;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Javeria;password=JAVERIANOOR123";
-        String query = "SELECT pet_name, pet_age, pet_breed, pet_allergies, pet_diseases, last_vet_visit FROM PetHealthRecords WHERE user_id = ?";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setInt(1, userId);  // Set the user_id parameter
-            ResultSet rs = stmt.executeQuery();
-
+        String query = "SELECT pet_name, pet_age, pet_breed, pet_allergies, pet_diseases, last_vet_visit FROM PetHealthRecords WHERE user_id = " + userId;
+        try (Connection conn = createConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             if (rs.next()) {
-                // Fill the fields with pet data
                 petNameField.setText(rs.getString("pet_name"));
                 petAgeField.setText(String.valueOf(rs.getInt("pet_age")));
                 petBreedField.setText(rs.getString("pet_breed"));
@@ -203,84 +619,108 @@ public class PetHealthRecordTracker extends JFrame {
                 petDiseasesField.setText(rs.getString("pet_diseases"));
                 lastVetVisitField.setText(rs.getString("last_vet_visit"));
             } else {
-                // If no data is found, notify the user
                 JOptionPane.showMessageDialog(this, "No pet record found for this user.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error loading pet data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void savePetData() {
-        String petAgeText = petAgeField.getText();
-
-        // Validate that the pet age is a valid integer
-        int petAge = -1;  // Default value for invalid input
-        try {
-            petAge = Integer.parseInt(petAgeText); // Try to parse the age
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid number for pet age.", "Invalid Age", JOptionPane.ERROR_MESSAGE);
-            return; // Exit the method if the age is invalid
+        if (!validateFields()) {
+            return; // Exit if validation fails
         }
 
-        // Continue with saving data if age is valid
-        String url = "jdbc:sqlserver://Javeria\\SQLEXPRESS;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Javeria;password=JAVERIANOOR123";
         String query = "UPDATE PetHealthRecords SET pet_name = ?, pet_age = ?, pet_breed = ?, pet_allergies = ?, pet_diseases = ?, last_vet_visit = ? WHERE user_id = ?";
 
-        try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = createConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, petNameField.getText());
+            pstmt.setInt(2, Integer.parseInt(petAgeField.getText()));
+            pstmt.setString(3, petBreedField.getText());
+            pstmt.setString(4, petAllergiesField.getText());
+            pstmt.setString(5, petDiseasesField.getText());
+            pstmt.setString(6, lastVetVisitField.getText());
+            pstmt.setInt(7, userId);
 
-            // Set the updated values
-            stmt.setString(1, petNameField.getText());
-            stmt.setInt(2, petAge);  // Use the validated pet age
-            stmt.setString(3, petBreedField.getText());
-            stmt.setString(4, petAllergiesField.getText());
-            stmt.setString(5, petDiseasesField.getText());
-            stmt.setString(6, lastVetVisitField.getText());
-            stmt.setInt(7, userId);  // Use the user_id
-
-            int rowsAffected = stmt.executeUpdate();
-
-            if (rowsAffected > 0) {
+            int rows = pstmt.executeUpdate();
+            if (rows > 0) {
                 JOptionPane.showMessageDialog(this, "Pet data updated successfully.");
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to update pet data.");
+                JOptionPane.showMessageDialog(this, "No record updated. Check user ID.", "Update Failed", JOptionPane.ERROR_MESSAGE);
             }
-
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error saving pet data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // Print detailed error information
+            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void deletePetData() {
-        String url = "jdbc:sqlserver://Javeria\\SQLEXPRESS;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Javeria;password=JAVERIANOOR123";
-        String query = "DELETE FROM PetHealthRecords WHERE user_id = ?";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setInt(1, userId);  // Use the user_id
-
-            int rowsAffected = stmt.executeUpdate();
-
-            if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(this, "Pet data deleted successfully.");
-                dispose();  // Close the current window
+        String query = "DELETE FROM PetHealthRecords WHERE user_id = " + userId;
+        try (Connection conn = createConnection(); Statement stmt = conn.createStatement()) {
+            int rows = stmt.executeUpdate(query);
+            if (rows > 0) {
+                JOptionPane.showMessageDialog(this, "Pet record deleted successfully.");
+                dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to delete pet data.");
+                JOptionPane.showMessageDialog(this, "No record deleted. Check user ID.", "Deletion Failed", JOptionPane.ERROR_MESSAGE);
             }
-
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error deleting pet data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    private boolean validateFields() {
+        if (petNameField.getText().trim().isEmpty() ||
+                petAgeField.getText().trim().isEmpty() ||
+                petBreedField.getText().trim().isEmpty() ||
+                petAllergiesField.getText().trim().isEmpty() ||
+                petDiseasesField.getText().trim().isEmpty() ||
+                lastVetVisitField.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "All fields must be filled!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            int age = Integer.parseInt(petAgeField.getText());
+            if (age < 0) {
+                JOptionPane.showMessageDialog(this, "Age must be a positive number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Age must be a valid number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if (!isValidDate(lastVetVisitField.getText())) {
+            JOptionPane.showMessageDialog(this, "Last Vet Visit must be in YYYY-MM-DD format!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidDate(String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false);
+            sdf.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    private Connection createConnection() throws SQLException {
+        // Replace with your database credentials and URL
+        String url = "jdbc:sqlserver://Javeria\\SQLEXPRESS;databaseName=PetApp;encrypt=false;trustServerCertificate=true;user=Javeria;password=JAVERIANOOR123";
+        String username = "Javeria";
+        String password = "JAVERIANOOR123";
+        return DriverManager.getConnection(url, username, password);
+    }
+
     public static void main(String[] args) {
-        // Replace with the actual user_id after login
-        int loggedInUserId = 1; // Example user_id, you would use the logged-in user's ID
-        PetHealthRecordTracker trackerWindow = new PetHealthRecordTracker(loggedInUserId);
-        trackerWindow.setVisible(true);
+        SwingUtilities.invokeLater(() -> new PetHealthRecordTracker(1).setVisible(true));
     }
 }
 
