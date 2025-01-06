@@ -21,7 +21,7 @@ public class Symptom_Checker extends JFrame {
         setBounds(100, 100, 850, 700);
 
         // Load the background image
-        backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\Aneeba Project 062\\SCDproject\\img_pet4.jpg").getImage();
+        backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\dogpic.jpg").getImage();
 
         // Set up the content pane
         contentPane = new JPanel() {
@@ -45,7 +45,7 @@ public class Symptom_Checker extends JFrame {
 
         // Input field label
         JLabel symptomLabel = new JLabel("Enter Pet Symptoms:");
-        symptomLabel.setFont(new Font("Papyrus", Font.BOLD, 18));
+        symptomLabel.setFont(new Font("Papyrus", Font.BOLD, 20));
         symptomLabel.setForeground(new Color(191, 128, 64));
         symptomLabel.setBounds(250, 200, 200, 30);
         contentPane.add(symptomLabel);

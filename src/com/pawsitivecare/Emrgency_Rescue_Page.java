@@ -1,11 +1,8 @@
 package com.pawsitivecare;
 
-
-
-
 import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.ActionEvent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Emrgency_Rescue_Page extends JFrame {
@@ -59,7 +56,40 @@ public class Emrgency_Rescue_Page extends JFrame {
         cityPanel.setOpaque(false); // Make panel transparent
         cityPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // Center the dropdown list
         cityPanel.add(cityComboBox);
-        mainPanel.add(cityPanel, BorderLayout.CENTER);
+
+        // Emergency numbers label
+        JLabel emergencyNumbersLabel = new JLabel("Emergency Numbers:");
+        emergencyNumbersLabel.setFont(new Font("Papyrus", Font.BOLD, 20));
+        emergencyNumbersLabel.setForeground(new Color(191, 128, 64));
+
+        // Emergency numbers list
+        String[] emergencyNumbers = {
+                "Police: 15",
+                "Ambulance: 1122",
+                "Fire Brigade: 16",
+                "Rescue: 1122",
+                "Traffic Police: 1915"
+        };
+        JList<String> emergencyNumbersList = new JList<>(emergencyNumbers);
+        emergencyNumbersList.setFont(new Font("Papyrus", Font.PLAIN, 16));
+        emergencyNumbersList.setForeground(new Color(0, 0, 0));
+        emergencyNumbersList.setBackground(new Color(255, 255, 255));
+
+        // Panel for emergency numbers
+        JPanel emergencyPanel = new JPanel();
+        emergencyPanel.setOpaque(false);
+        emergencyPanel.setLayout(new BorderLayout());
+        emergencyPanel.add(emergencyNumbersLabel, BorderLayout.NORTH);
+        emergencyPanel.add(new JScrollPane(emergencyNumbersList), BorderLayout.CENTER);
+
+        // Add city and emergency numbers panels to a combined panel
+        JPanel combinedPanel = new JPanel();
+        combinedPanel.setOpaque(false);
+        combinedPanel.setLayout(new BorderLayout());
+        combinedPanel.add(cityPanel, BorderLayout.NORTH);
+        combinedPanel.add(emergencyPanel, BorderLayout.CENTER);
+
+        mainPanel.add(combinedPanel, BorderLayout.CENTER);
 
         // Submit button
         JButton submitButton = new JButton("Submit");

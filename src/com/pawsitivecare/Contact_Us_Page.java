@@ -201,7 +201,7 @@ public class Contact_Us_Page extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Image backgroundImage = new ImageIcon("C:\\Users\\IDEAL\\OneDrive\\Desktop\\img_paws.jpg").getImage();
+                Image backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\catpaws.jpg").getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -212,7 +212,7 @@ public class Contact_Us_Page extends JFrame {
         JLabel titleLabel = new JLabel("Contact Us");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Papyrus", Font.BOLD, 44));
-        titleLabel.setForeground(new Color(0, 0, 0));
+        titleLabel.setForeground(new Color(255, 255, 255));
         titleLabel.setBounds(0, 50, 900, 80);
         contentPane.add(titleLabel);
 
@@ -220,21 +220,21 @@ public class Contact_Us_Page extends JFrame {
         JLabel subtitleLabel = new JLabel("We are here to help with your pets' needs!");
         subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         subtitleLabel.setFont(new Font("Papyrus", Font.PLAIN, 20));
-        subtitleLabel.setForeground(new Color(0, 0, 0));
+        subtitleLabel.setForeground(new Color(255, 255, 255));
         subtitleLabel.setBounds(0, 130, 900, 40);
         contentPane.add(subtitleLabel);
 
         // Contact info section
         JLabel contactLabel = new JLabel("<html><b>Phone:</b> +1 800 123 4567<br><b>Email:</b> support@pawsitivecare.com<br><b>Address:</b> 123 Pet Care Lane, Happy City, 12345</html>");
         contactLabel.setFont(new Font("Papyrus", Font.BOLD, 18));
-        contactLabel.setForeground(new Color(172, 115, 57));
+        contactLabel.setForeground(new Color(0, 0, 0));
         contactLabel.setBounds(50, 180, 800, 120);
         contentPane.add(contactLabel);
 
         // Section for user to write a message
         JLabel messageLabel = new JLabel("Leave us a message:");
         messageLabel.setFont(new Font("Papyrus", Font.BOLD, 18));
-        messageLabel.setForeground(new Color(172, 115, 57));
+        messageLabel.setForeground(new Color(0, 0, 0));
         messageLabel.setBounds(50, 320, 200, 30);
         contentPane.add(messageLabel);
 

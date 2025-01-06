@@ -506,7 +506,7 @@ public class PetHealthRecordTracker extends JFrame {
         setLocationRelativeTo(null);
 
         // Custom JPanel for background
-        Image backgroundImage = new ImageIcon("C:\\path\\to\\img_paws.jpg").getImage();
+        Image backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\pic10.jpg").getImage();
         JPanel contentPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -626,33 +626,36 @@ public class PetHealthRecordTracker extends JFrame {
         }
     }
 
+
+
     private void savePetData() {
         if (!validateFields()) {
             return; // Exit if validation fails
         }
 
-        String query = "UPDATE PetHealthRecords SET pet_name = ?, pet_age = ?, pet_breed = ?, pet_allergies = ?, pet_diseases = ?, last_vet_visit = ? WHERE user_id = ?";
+        String query = "INSERT INTO PetHealthRecords (user_id, pet_name, pet_age, pet_breed, pet_allergies, pet_diseases, last_vet_visit) VALUES ("
+                + userId + ", '"
+                + petNameField.getText() + "', "
+                + petAgeField.getText() + ", '"
+                + petBreedField.getText() + "', '"
+                + petAllergiesField.getText() + "', '"
+                + petDiseasesField.getText() + "', '"
+                + lastVetVisitField.getText() + "')";
 
-        try (Connection conn = createConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, petNameField.getText());
-            pstmt.setInt(2, Integer.parseInt(petAgeField.getText()));
-            pstmt.setString(3, petBreedField.getText());
-            pstmt.setString(4, petAllergiesField.getText());
-            pstmt.setString(5, petDiseasesField.getText());
-            pstmt.setString(6, lastVetVisitField.getText());
-            pstmt.setInt(7, userId);
+        try (Connection conn = createConnection(); Statement stmt = conn.createStatement()) {
+            int rows = stmt.executeUpdate(query);
 
-            int rows = pstmt.executeUpdate();
             if (rows > 0) {
-                JOptionPane.showMessageDialog(this, "Pet data updated successfully.");
+                JOptionPane.showMessageDialog(this, "Pet data inserted successfully.");
             } else {
-                JOptionPane.showMessageDialog(this, "No record updated. Check user ID.", "Update Failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Failed to insert pet data.", "Insert Failed", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Print detailed error information
             JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void deletePetData() {
         String query = "DELETE FROM PetHealthRecords WHERE user_id = " + userId;
