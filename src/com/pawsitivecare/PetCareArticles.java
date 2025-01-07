@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class PetCareArticles extends JFrame {
 
+
     // Map to track open article windows
     private final Map<String, JFrame> openArticles = new HashMap<>();
 
@@ -16,44 +17,59 @@ public class PetCareArticles extends JFrame {
     private JButton resetButton;
     private JPanel contentPanel;
 
+
+
     public PetCareArticles() {
         setTitle("Pet Care Articles");
         setSize(900, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        setLayout(new BorderLayout());
+        // Custom background panel
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\pic12.jpg");
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        backgroundPanel.setLayout(new BorderLayout());
+        setContentPane(backgroundPanel);  // Set the custom panel as the content pane
 
         // Title
         JLabel titleLabel = new JLabel("Pet Care Articles", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Papyrus", Font.BOLD, 24));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         titleLabel.setForeground(new Color(0, 100, 200));
-        add(titleLabel, BorderLayout.NORTH);
+        backgroundPanel.add(titleLabel, BorderLayout.NORTH);
 
         // Search Panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        searchPanel.setOpaque(false);
         resetButton = new JButton("Reset");
         resetButton.addActionListener(e -> resetSearch());
 
-        searchField = new JTextField(70); // Extended size for better usability
+        searchField = new JTextField(70);
         searchButton = new JButton("Search");
         searchButton.addActionListener(e -> filterArticles(searchField.getText().trim()));
 
         searchPanel.add(resetButton);
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
-        add(searchPanel, BorderLayout.NORTH);
+        backgroundPanel.add(searchPanel, BorderLayout.NORTH);
 
         // Content Panel
         contentPanel = new JPanel();
-        contentPanel.setLayout(new GridLayout(0, 2, 20, 20)); // Flexible rows with 2 columns
+        contentPanel.setOpaque(false);
+        contentPanel.setLayout(new GridLayout(0, 2, 20, 20));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         populateCategories();
 
         JScrollPane scrollPane = new JScrollPane(contentPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        backgroundPanel.add(scrollPane, BorderLayout.CENTER);
 
         // Back Button
         JButton backButton = new JButton("Back");
@@ -61,10 +77,12 @@ public class PetCareArticles extends JFrame {
         backButton.setBackground(new Color(0, 0, 0));
         backButton.setForeground(Color.WHITE);
         backButton.addActionListener(e -> dispose());
-        add(backButton, BorderLayout.SOUTH);
+        backgroundPanel.add(backButton, BorderLayout.SOUTH);
 
         setVisible(true);
     }
+
+
 
     private void populateCategories() {
         // Populate categories with articles
@@ -101,19 +119,22 @@ public class PetCareArticles extends JFrame {
         });
     }
 
+
     private void addCategory(JPanel panel, String categoryName, String[] articles) {
         JPanel categoryPanel = new JPanel(new BorderLayout());
         categoryPanel.setBorder(BorderFactory.createTitledBorder(categoryName));
+        categoryPanel.setOpaque(false);  // Make the category panel transparent
 
         JPanel linksPanel = new JPanel();
         linksPanel.setLayout(new BoxLayout(linksPanel, BoxLayout.Y_AXIS));
+        linksPanel.setOpaque(false);  // Make the links panel transparent
 
         for (String article : articles) {
             JButton articleButton = new JButton(article);
             articleButton.setFont(new Font("Arial", Font.BOLD, 14));
             articleButton.setHorizontalAlignment(SwingConstants.LEFT);
             articleButton.setBorderPainted(false);
-            articleButton.setBackground(Color.WHITE);
+            articleButton.setBackground(new Color(255, 255, 255, 150)); // Slight transparency for buttons
             articleButton.setForeground(new Color(0, 102, 204));
             articleButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -125,6 +146,7 @@ public class PetCareArticles extends JFrame {
         categoryPanel.add(linksPanel, BorderLayout.CENTER);
         panel.add(categoryPanel);
     }
+
 
     private void openArticle(String category, String articleTitle) {
         if (openArticles.containsKey(articleTitle)) {
@@ -182,9 +204,12 @@ public class PetCareArticles extends JFrame {
         return articleFrame;
     }
 
+
     // Method to filter articles based on search term
     private void filterArticles(String searchTerm) {
         Component[] components = contentPanel.getComponents();
+        boolean anyResultsFound = false; // Flag to track if any results were found
+
         for (Component component : components) {
             if (component instanceof JPanel) {
                 JPanel categoryPanel = (JPanel) component;
@@ -205,11 +230,23 @@ public class PetCareArticles extends JFrame {
 
                 // Ensure the category panel remains visible if at least one button is visible
                 categoryPanel.setVisible(anyVisible);
+                anyResultsFound = anyResultsFound || anyVisible;
             }
         }
+
+        // If no results are found, display a message
+        if (!anyResultsFound) {
+            contentPanel.removeAll(); // Clear existing content
+            JLabel noResultsLabel = new JLabel("No search results found", SwingConstants.CENTER);
+            noResultsLabel.setFont(new Font("Papyrus", Font.BOLD, 24));
+            noResultsLabel.setForeground(Color.RED);
+            contentPanel.add(noResultsLabel); // Add the message to the content panel
+        }
+
         contentPanel.revalidate();
         contentPanel.repaint();
     }
+
 
     // Method to reset the search field and display all articles
     private void resetSearch() {

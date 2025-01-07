@@ -21,7 +21,7 @@ public class client extends JFrame {
         setBounds(0, 0, 900, 800);
 
         // Load the background image
-        backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\Aneeba Project 062\\SCDproject\\img_paws.jpg").getImage();
+        backgroundImage = new ImageIcon("C:\\Users\\javer\\OneDrive\\Desktop\\dogpic10.jpg").getImage();
 
         // Set up the content pane
         contentPane = new JPanel() {

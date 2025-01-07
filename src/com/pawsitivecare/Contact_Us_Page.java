@@ -219,8 +219,8 @@ public class Contact_Us_Page extends JFrame {
         // Subtitle label for contact details
         JLabel subtitleLabel = new JLabel("We are here to help with your pets' needs!");
         subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        subtitleLabel.setFont(new Font("Papyrus", Font.PLAIN, 20));
-        subtitleLabel.setForeground(new Color(255, 255, 255));
+        subtitleLabel.setFont(new Font("Papyrus", Font.BOLD, 20));
+        subtitleLabel.setForeground(new Color(255,255,255));
         subtitleLabel.setBounds(0, 130, 900, 40);
         contentPane.add(subtitleLabel);
 

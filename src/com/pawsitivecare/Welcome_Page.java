@@ -30,7 +30,7 @@ public class Welcome_Page extends JFrame {
         // Add title label (Centered at the top)
         JLabel titleLabel = new JLabel("Welcome to PawsitiveCare!", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Papyrus", Font.BOLD, 36));
-        titleLabel.setForeground(new Color(191, 128, 64));  // Adjusted text color
+        titleLabel.setForeground(new Color(0,0,0));  // Adjusted text color
         titleLabel.setOpaque(true);
         titleLabel.setBackground(new Color(255, 255, 255, 150)); // Semi-transparent white background
         titleLabel.setPreferredSize(new Dimension(900, 100));  // Adjusted width to 900
